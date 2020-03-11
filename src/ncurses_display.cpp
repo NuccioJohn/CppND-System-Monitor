@@ -3,6 +3,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <iostream>
 
 #include "format.h"
 #include "ncurses_display.h"
@@ -10,6 +11,7 @@
 
 using std::string;
 using std::to_string;
+using std::cout;
 
 // 50 bars uniformly displayed from 0 - 100 %
 // 2% is one bar(|)
@@ -62,6 +64,7 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   int const time_column{35};
   int const command_column{46};
   wattron(window, COLOR_PAIR(2));
+ 
   mvwprintw(window, ++row, pid_column, "PID");
   mvwprintw(window, row, user_column, "USER");
   mvwprintw(window, row, cpu_column, "CPU[%%]");
@@ -74,12 +77,16 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
     mvwprintw(window, row, user_column, processes[i].User().c_str());
     float cpu = processes[i].CpuUtilization() * 100;
     mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
+    ///cout << "Pid ncurses " << "\n";
     mvwprintw(window, row, ram_column, processes[i].Ram().c_str());
+  ///  cout << "Ending ncurses " << "\n";
     mvwprintw(window, row, time_column,
               Format::ElapsedTime(processes[i].UpTime()).c_str());
     mvwprintw(window, row, command_column,
               processes[i].Command().substr(0, window->_maxx - 46).c_str());
+    
   }
+  
 }
 
 void NCursesDisplay::Display(System& system, int n) {

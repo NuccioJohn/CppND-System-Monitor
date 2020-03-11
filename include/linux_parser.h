@@ -46,6 +46,9 @@ long ActiveJiffies();
 long ActiveJiffies(int pid);
 long IdleJiffies();
 
+//added stuff
+std::string extract_match(const std::string& directory, const std::string& to_match);
+
 // Processes
 std::string Command(int pid);
 std::string Ram(int pid);
